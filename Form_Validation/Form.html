@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="bootstrap-5.0.0-dist/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="form-data-json-object/src/formToJson.js"></script>
+    <style>
+      th, td, p, input, h3 {
+          font:15px 'Segoe UI';
+          
+      }
+      table, th, td {
+          border: solid 2px #212529 ;
+          border-collapse: collapse;
+          padding: 2px 3px;
+          text-align: center;
+          margin-left: 260px;
+      }
+      th {
+          font-weight:bold;
+      }
+  </style>
+</head>
+<body>
+  <div>
+    <form id="abcd" action="" onsubmit="validation()">
+        <h1 class="text-center bg-dark text-white">Sign-Up</h1>
+    <div class="form- row">
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Name</label>
+        <input type="text" class="form-control" id="name" placeholder="">
+        <span id="nameerr" class="text-danger font-weight-bold"></span>
+      </div>
+      <div class="form-group col-md-12">
+        <label for="inputEmail4">Email</label>
+        <input type="email" class="form-control" id="email" placeholder="">
+      <span id="emailerr" class="text-danger font-weight-bold"></span>
+     </div>
+      <div class="form-group col-md-12">
+        <label for="inputPassword4">Contact Number</label>
+        <input type="text" maxlength="10" class="form-control" id="Contact" placeholder="" >
+       <span id="contacterr" class="text-danger font-weight-bold"></span>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md-2">
+        <label for="house">House Number</label>
+        <input type="text" class="form-control" id="HouseNo" placeholder="1234 Main St">
+      <span id="HouseNoErr" class="text-danger font-weight-bold"></span>
+     </div>
+    <div class="form-group col-md-4">
+      <label for="inputAddress">Address</label>
+      <input type="text" class="form-control" id="inputAddress" placeholder="Street 1">
+     <span id="StreetErr" class="text-danger font-weight-bold"></span>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="inputAddress2">Address 2</label>
+      <input type="text" class="form-control" id="inputAddress2" placeholder="Street 2">
+     <span id="Street2Err" class="text-danger font-weight-bold"></span>
+    </div>
+  </div>
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="inputState">State</label>
+        <select name="state" id="stateSel" class="form-control" size="1" onchange="myFunction()">
+          <option selected>Please Select state...</option>
+        </select>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputState">City</label>
+        <select name="city" id="districtSel" class="form-control">
+          <option selected>Please select state first...</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group col-md-4">
+      <label for="inputZip">Zip</label>
+       <input type="text" maxlength="6" class="form-control" id="pass">
+       <span id="pwderr" class="text-danger font-weight-bold"></span>
+    </div>
+       <button type="submit" id="show" class="btn btn-primary">Sign in</button>
+  </form>
+  <hr>
+  <p id="showData"></p>
+
+</body>
+<script>
+    var stateObject = {
+    "Delhi": ["new Delhi", "North Delhi"],
+    "Kerala": ["Thiruvananthapuram", "Palakkad"],
+    "Goa": ["North Goa", "South Goa"],
+    "Madhya Pradesh": ["Indore", "Bhopal", "Gwalior"],
+    "Rajasthan": ["Kota", "Jaipur"], 
+    "Gujrat": ["Ahmedabad", "Surat"],
+    "Maharashtra": ["Mumbai", "Pune"],
+    }
+    window.onload = function () {
+    var stateSel = document.getElementById("stateSel"),
+    districtSel = document.getElementById("districtSel");
+    for (var state in stateObject) {
+    stateSel.options[stateSel.options.length] = new Option(state, state);
+    }
+}
+    function myFunction() {
+    districtSel.length = 1; 
+    if (this.selectedIndex < 1){
+        return;
+        }
+    var district = stateObject[stateSel.value];
+    for (var i = 0; i < district.length; i++) {
+    districtSel.options[districtSel.options.length] = new Option(district[i], district[i]);
+    }
+    }
+
+  function validation(){
+    let name = validname();
+    let email = validemail();
+    let phone = validphone();
+    let pass = validpass();
+    let house = validHouse();
+    let Street = validStreet();
+    let Street2 = validStreet2();
+    
+    if(name && email && phone && pass && house && Street && Street2){
+      display();  
+      $.myjQuery();
+    }
+  
+  return true;
+ 
+  }
+
+  function validname() {
+
+      var name = document.getElementById("name").value;
+      
+      var namecheck = /^[a-zA-Z]+(([',. -][a-zA-Z])?[a-zA-Z]*)*$/;
+      if (namecheck.test(name)== true){
+          document.getElementById("nameerr").innerHTML = "";
+          return true;
+      }
+      else if(name==""){
+          document.getElementById("nameerr").innerHTML = "Please enter Name";
+          return false;
+      }
+      else {
+          document.getElementById("nameerr").innerHTML = "Name is Invalid, Name should be in characters.";
+          return false;
+      }
+  }
+
+  function validphone() {
+      var contact = document.getElementById("Contact").value;
+      var phoneval = /^\d{10}$/; 
+      if (phoneval.test(contact)) {
+          document.getElementById("contacterr").innerHTML = "";
+          return true;
+      }
+      else if(contact==""){
+          document.getElementById("contacterr").innerHTML = "Please enter Contact Number";
+          return false;
+      }
+      else {
+          document.getElementById("contacterr").innerHTML = "Contact number is not valid";
+          return false;
+      }
+  }
+
+  function validemail() {
+      var email = document.getElementById("email").value;
+      var emailcheck = /^[A-za-z_.]{3,}@[A-za-z]{3,}[.]{1}[A-za-z.]{2,6}$/;
+      if (emailcheck.test(email)) {
+          document.getElementById("emailerr").innerHTML = "";
+          return true;
+      }
+      else if(email==""){
+          document.getElementById("emailerr").innerHTML = "Please enter Email";
+          return false;
+      }
+      else {
+          document.getElementById("emailerr").innerHTML = "email is not valid";
+          return false;
+      }
+  }
+  function validHouse() {
+      var HouseNo = document.getElementById("HouseNo").value;
+      console.log(HouseNo);
+      var HouseNoCheck = new RegExp('^\\d+$');
+      if (HouseNoCheck.test(HouseNo)) {
+          document.getElementById("HouseNoErr").innerHTML = "";
+          return true;
+      }
+      else if(HouseNo==""){
+          document.getElementById("HouseNoErr").innerHTML = "Please enter House Number";
+          return false;
+      }
+      else {
+          document.getElementById("HouseNoErr").innerHTML = "House Number is not valid";
+          return false;
+      }
+  }
+
+  function validStreet() {
+var street = document.getElementById("inputAddress").value;
+
+if(street==""){
+    document.getElementById("StreetErr").innerHTML = "Please enter Street 1 Name";
+    return false;
+}
+else {
+    document.getElementById("StreetErr").innerHTML = "";
+    return true;
+}
+}
+
+function validStreet2() {
+var street2 = document.getElementById("inputAddress2").value;
+
+if(street2==""){
+    document.getElementById("Street2Err").innerHTML = "Please enter Street 2 Name";
+    return false;
+}
+else {
+    document.getElementById("Street2Err").innerHTML = "";
+    return true;
+}
+}
+
+  function validpass(){
+      var pass = document.getElementById("pass").value;
+      var passwordval = pass.length;
+
+      if (passwordval==6) {
+          document.getElementById("pwderr").innerHTML = "";
+          return true;
+      }
+      else if(pass==""){
+          document.getElementById("pwderr").innerHTML = "Please enter Pin Code";
+          return false;
+      }
+      else{
+        document.getElementById("pwderr").innerHTML = "Please enter six digit Pin Code";
+        return false;
+      }
+  }
+
+  function display() {
+    console.log("Display");
+    var UserDetails = [
+            {'Name': document.getElementById("name").value,
+                'ContactNumber': document.getElementById("Contact").value,
+                'Email': document.getElementById("email").value,
+                'House Number' : document.getElementById("HouseNo").value,
+                'ZipCode': document.getElementById("pass").value
+            }
+          ]
+
+          var col = [];
+        for (var i = 0; i < UserDetails.length; i++) {
+            for (var key in UserDetails[i]) {
+                if (col.indexOf(key) === -1) {
+                    col.push(key);
+                }
+            }
+        }
+        
+        var table = document.createElement("table");
+          var tr = table.insertRow(-1);                   
+
+          for (var i = 0; i < col.length; i++) {
+              var th = document.createElement("th");      
+              th.innerHTML = col[i];
+              tr.appendChild(th);
+            }
+
+            for (var i = 0; i < UserDetails.length; i++) {
+
+            tr = table.insertRow(-1);
+
+            for (var j = 0; j < col.length; j++) {
+                var tabCell = tr.insertCell(-1);
+                tabCell.innerHTML = UserDetails[i][col[j]];
+            }
+            }
+
+            var divShowData = document.getElementById('showData');
+            divShowData.innerHTML = "";
+            divShowData.appendChild(table);
+
+  }
+  var form = document.getElementById("abcd");
+  function handleForm(event) {
+      event.preventDefault();
+  }
+  form.addEventListener('submit', handleForm);
+
+  $(document).ready(function(){
+    $("table").hide();
+
+  $.myjQuery = function() {
+      console.log("Jquery chala");
+    $("table").show();
+    $("form").hide();
+  };
+  });
+
+  $('#abcd').formToJson('.result');
+
+</script>
+<script src="bootstrap-5.0.0-dist/js/bootstrap.bundle.min.js"></script>
+<script src="bootstrap-5.0.0-dist/js/bootstrap.min.js"></script>
+</html>
